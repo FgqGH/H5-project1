@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园运动场地预约系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f6fa; color: #333; }
+        
+        /* 导航栏 */
+        .navbar { background: #1a73e8; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { font-size: 1.3rem; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        
+        /* 主体 */
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        
+        /* 卡片 */
+        .card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card h2 { color: #1a73e8; margin-bottom: 1rem; font-size: 1.2rem; }
+        
+        /* 登录页面 */
+        .login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); }
+        .login-box { background: white; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .login-box h1 { text-align: center; color: #1a73e8; margin-bottom: 0.5rem; }
+        .login-box p { text-align: center; color: #666; margin-bottom: 2rem; }
+        .login-box input { width: 100%; padding: 0.8rem 1rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .login-box button { width: 100%; padding: 0.8rem; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: background 0.3s; }
+        .login-box button:hover { background: #1557b0; }
+        
+        /* 场地卡片 */
+        .venue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .venue-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.3s; }
+        .venue-card:hover { transform: translateY(-4px); }
+        .venue-img { height: 160px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; }
+        .venue-info { padding: 1rem; }
+        .venue-name { font-weight: bold; margin-bottom: 0.5rem; }
+        .venue-desc { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .venue-price { color: #1a73e8; font-weight: bold; }
+        .venue-btn { width: 100%; padding: 0.6rem; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
+        
+        /* 表单 */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; color: #666; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; }
+        .submit-btn { padding: 0.8rem 2rem; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        
+        /* 表格 */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f5f6fa; color: #666; font-weight: 500; }
+        .status { padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.85rem; }
+        .status-pending { background: #fff3e0; color: #e65100; }
+        .status-approved { background: #e8f5e9; color: #2e7d32; }
+        .status-rejected { background: #ffebee; color: #c62828; }
+        
+        /* Tab 切换 */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .nav-links { gap: 0.5rem; font-size: 0.9rem; }
+            .venue-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-wrapper">
+        <div class="login-box">
+            <h1>🏃 校园场地预约</h1>
+            <p>登录以继续</p>
+            <input type="text" id="username" placeholder="姓名">
+            <input type="text" id="studentId" placeholder="学号">
+            <input type="tel" id="phone" placeholder="手机号">
+            <button onclick="login()">登录</button>
+        </div>
+    </div>
+
+    <!-- 主页面 -->
+    <div id="mainPage" style="display:none;">
+        <nav class="navbar">
+            <h1>🏃 校园运动场地预约系统</h1>
+            <div class="nav-links">
+                <a href="#" class="active" onclick="showTab('home')">首页</a>
+                <a href="#" onclick="showTab('venues')">场地列表</a>
+                <a href="#" onclick="showTab('booking')">我要预约</a>
+                <a href="#" onclick="showTab('records')">我的预约</a>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <!-- 首页 -->
+            <div id="home" class="tab-content active">
+                <div class="card">
+                    <h2>欢迎使用校园运动场地预约系统</h2>
+                    <p>简洁高效，轻松预约校园运动场地</p>
+                </div>
+                <div class="venue-grid" id="homeVenues"></div>
+            </div>
+            
+            <!-- 场地列表 -->
+            <div id="venues" class="tab-content">
+                <div class="card">
+                    <h2>📋 场地列表</h2>
+                    <div class="venue-grid" id="venueList"></div>
+                </div>
+            </div>
+            
+            <!-- 我要预约 -->
+            <div id="booking" class="tab-content">
+                <div class="card">
+                    <h2>📝 预约场地</h2>
+                    <form id="bookingForm" class="form-grid">
+                        <div class="form-group">
+                            <label>姓名</label>
+                            <input type="text" id="bookName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>学号</label>
+                            <input type="text" id="bookStudentId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>手机号</label>
+                            <input type="tel" id="bookPhone" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>场地</label>
+                            <select id="bookVenue" required><option value="">请选择场地</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>预约日期</label>
+                            <input type="date" id="bookDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>时间段</label>
+                            <select id="bookTime" required>
+                                <option value="">请选择时间段</option>
+                                <option value="08:00-10:00">08:00-10:00</option>
+                                <option value="10:00-12:00">10:00-12:00</option>
+                                <option value="14:00-16:00">14:00-16:00</option>
+                                <option value="16:00-18:00">16:00-18:00</option>
+                                <option value="18:00-20:00">18:00-20:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label>用途</label>
+                            <input type="text" id="bookPurpose" placeholder="请输入使用用途" required>
+                        </div>
+                        <div style="grid-column: 1/-1;">
+                            <button type="submit" class="submit-btn">提交预约</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 我的预约 -->
+            <div id="records" class="tab-content">
+                <div class="card">
+                    <h2>📜 我的预约记录</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>场地</th>
+                                <th>日期</th>
+                                <th>时间</th>
+                                <th>用途</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 场地数据
+        const venues = [
+            { id: 1, name: '篮球场', price: '¥50/小时', icon: '🏀', desc: '室外标准篮球场，2片场地' },
+            { id: 2, name: '足球场', price: '¥100/小时', icon: '⚽', desc: '标准11人制足球场' },
+            { id: 3, name: '网球场', price: '¥60/小时', icon: '🎾', desc: '室外硬地网球场，4片场地' }
+        ];
+
+        // 状态
+        let currentUser = null;
+
+        // 初始化
+        function init() {
+            const saved = localStorage.getItem('campusUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                showMainPage();
+            }
+            renderVenues();
+        }
+
+        // 登录
+        function login() {
+            const name = document.getElementById('username').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!name || !studentId || !phone) {
+                alert('请填写完整信息');
+                return;
+            }
+            
+            currentUser = { name, studentId, phone };
+            localStorage.setItem('campusUser', JSON.stringify(currentUser));
+            showMainPage();
+        }
+
+        // 显示主页面
+        function showMainPage() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+            
+            document.getElementById('bookName').value = currentUser.name;
+            document.getElementById('bookStudentId').value = currentUser.studentId;
+            document.getElementById('bookPhone').value = currentUser.phone;
+            
+            // 填充场地选项
+            const select = document.getElementById('bookVenue');
+            select.innerHTML = '<option value="">请选择场地</option>';
+            venues.forEach(v => {
+                select.innerHTML += `<option value="${v.name}">${v.icon} ${v.name} - ${v.price}</option>`;
+            });
+            
+            renderVenues();
+            renderRecords();
+        }
+
+        // 渲染场地
+        function renderVenues() {
+            const html = venues.map(v => `
+                <div class="venue-card">
+                    <div class="venue-img">${v.icon}</div>
+                    <div class="venue-info">
+                        <div class="venue-name">${v.name}</div>
+                        <div class="venue-desc">${v.desc}</div>
+                        <div class="venue-price">${v.price}</div>
+                        <button class="venue-btn" onclick="bookVenue('${v.name}')">立即预约</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('homeVenues').innerHTML = html;
+            document.getElementById('venueList').innerHTML = html;
+        }
+
+        // 跳转预约
+        function bookVenue(name) {
+            document.getElementById('bookVenue').value = name;
+            showTab('booking');
+        }
+
+        // Tab切换
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 提交预约
+        document.getElementById('bookingForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const record = {
+                id: Date.now(),
+                name: currentUser.name,
+                studentId: currentUser.studentId,
+                venue: document.getElementById('bookVenue').value,
+                date: document.getElementById('bookDate').value,
+                time: document.getElementById('bookTime').value,
+                purpose: document.getElementById('bookPurpose').value,
+                status: 'pending'
+            };
+            
+            const records = JSON.parse(localStorage.getItem('campusRecords') || '[]');
+            records.push(record);
+            localStorage.setItem('campusRecords', JSON.stringify(records));
+            
+            alert('预约成功！');
+            this.reset();
+            renderRecords();
+            showTab('records');
+        };
+
+        // 渲染记录
+        function renderRecords() {
+            const records = JSON.parse(localStorage.getItem('campusRecords') || '[]')
+                .filter(r => r.studentId === currentUser?.studentId);
+            
+            const statusMap = {
+                pending: ['待审核', 'status-pending'],
+                approved: ['已通过', 'status-approved'],
+                rejected: ['已拒绝', 'status-rejected']
+            };
+            
+            document.getElementById('recordList').innerHTML = records.length ? records.map(r => {
+                const [text, cls] = statusMap[r.status];
+                return `<tr>
+                    <td>${r.venue}</td>
+                    <td>${r.date}</td>
+                    <td>${r.time}</td>
+                    <td>${r.purpose}</td>
+                    <td><span class="status ${cls}">${text}</span></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="5" style="text-align:center;color:#999;">暂无预约记录</td></tr>';
+        }
+
+        init();
+    </script>
+</body>
+</html>
