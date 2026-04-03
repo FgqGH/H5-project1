@@ -9,18 +9,21 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f6fa; color: #333; }
         
         /* 导航栏 */
-        .navbar { background: #1a73e8; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar { background: #1a73e8; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .navbar h1 { font-size: 1.3rem; }
-        .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; }
+        .nav-links { display: flex; gap: 0.5rem; }
+        .nav-links a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 4px; transition: background 0.3s; font-size: 0.95rem; }
         .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .user-info { display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
+        .logout-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; }
         
         /* 主体 */
         .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
         
         /* 卡片 */
         .card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .card h2 { color: #1a73e8; margin-bottom: 1rem; font-size: 1.2rem; }
+        .card h2 { color: #1a73e8; margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .card h3 { color: #333; margin-bottom: 0.8rem; font-size: 1rem; }
         
         /* 登录页面 */
         .login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); }
@@ -30,17 +33,37 @@
         .login-box input { width: 100%; padding: 0.8rem 1rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
         .login-box button { width: 100%; padding: 0.8rem; background: #1a73e8; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: background 0.3s; }
         .login-box button:hover { background: #1557b0; }
+        .login-box .tab-switch { text-align: center; margin-top: 1rem; }
+        .login-box .tab-switch a { color: #1a73e8; cursor: pointer; }
         
         /* 场地卡片 */
         .venue-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         .venue-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.3s; }
         .venue-card:hover { transform: translateY(-4px); }
-        .venue-img { height: 160px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; }
+        .venue-img { height: 140px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; position: relative; }
+        .venue-badge { position: absolute; top: 10px; right: 10px; background: #fff; color: #1a73e8; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
         .venue-info { padding: 1rem; }
-        .venue-name { font-weight: bold; margin-bottom: 0.5rem; }
-        .venue-desc { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .venue-name { font-weight: bold; margin-bottom: 0.3rem; }
+        .venue-desc { color: #666; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .venue-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: #888; margin-bottom: 0.5rem; }
         .venue-price { color: #1a73e8; font-weight: bold; }
         .venue-btn { width: 100%; padding: 0.6rem; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
+        .venue-btn-outline { background: white; border: 1px solid #1a73e8; color: #1a73e8; }
+        
+        /* 筛选器 */
+        .filter-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; }
+        .filter-bar select, .filter-bar input { padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; }
+        .filter-bar button { padding: 0.5rem 1.5rem; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        
+        /* 详情弹窗 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 16px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 2rem; position: relative; }
+        .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; }
+        .modal-img { height: 200px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 5rem; border-radius: 12px; margin-bottom: 1rem; }
+        .detail-row { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid #eee; }
+        .detail-label { color: #666; }
+        .detail-value { font-weight: 500; }
         
         /* 表单 */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
@@ -57,16 +80,65 @@
         .status-pending { background: #fff3e0; color: #e65100; }
         .status-approved { background: #e8f5e9; color: #2e7d32; }
         .status-rejected { background: #ffebee; color: #c62828; }
+        .action-btn { padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+        .action-cancel { background: #ffebee; color: #c62828; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* 统计 */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        .stat-card { background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: white; padding: 1.5rem; border-radius: 12px; text-align: center; }
+        .stat-num { font-size: 2rem; font-weight: bold; }
+        .stat-label { opacity: 0.9; font-size: 0.9rem; }
+        .stat-card.orange { background: linear-gradient(135deg, #ff9800 0%, #e65100 100%); }
+        .stat-card.green { background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); }
+        .stat-card.purple { background: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%); }
+        
+        /* 热门场地排行 */
+        .rank-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .rank-item { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; background: #f8f9fa; border-radius: 8px; }
+        .rank-num { width: 30px; height: 30px; background: #1a73e8; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+        .rank-num.gold { background: #ff9800; }
+        .rank-num.silver { background: #9e9e9e; }
+        .rank-name { flex: 1; font-weight: 500; }
+        .rank-bar { width: 100px; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
+        .rank-bar-fill { height: 100%; background: #1a73e8; border-radius: 4px; }
+        
+        /* 时段分布 */
+        .time-slots { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .time-slot { padding: 0.5rem 1rem; background: #e3f2fd; color: #1565c0; border-radius: 20px; font-size: 0.85rem; }
+        .time-slot.hot { background: #ffebee; color: #c62828; }
+        
+        /* 用户中心 */
+        .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; }
+        .profile-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; }
+        .profile-info h3 { margin-bottom: 0.5rem; }
+        .profile-info p { color: #666; font-size: 0.9rem; }
+        .profile-form .form-group { max-width: 400px; }
+        
+        /* 提醒弹窗 */
+        .reminder-popup { position: fixed; bottom: 20px; right: 20px; background: white; border-radius: 12px; padding: 1rem 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 1001; display: none; animation: slideIn 0.3s ease; }
+        .reminder-popup.show { display: block; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .reminder-popup h4 { color: #1a73e8; margin-bottom: 0.5rem; }
+        .reminder-popup p { color: #666; font-size: 0.9rem; }
+        .reminder-close { float: right; cursor: pointer; color: #999; }
         
         /* Tab 切换 */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
+        /* 空状态 */
+        .empty-state { text-align: center; padding: 3rem; color: #999; }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+        
         /* 响应式 */
         @media (max-width: 768px) {
-            .nav-links { gap: 0.5rem; font-size: 0.9rem; }
+            .nav-links { gap: 0.3rem; font-size: 0.85rem; }
+            .nav-links a { padding: 0.4rem 0.6rem; }
             .venue-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .profile-header { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -92,6 +164,12 @@
                 <a href="#" onclick="showTab('venues')">场地列表</a>
                 <a href="#" onclick="showTab('booking')">我要预约</a>
                 <a href="#" onclick="showTab('records')">我的预约</a>
+                <a href="#" onclick="showTab('stats')">数据统计</a>
+                <a href="#" onclick="showTab('profile')">用户中心</a>
+            </div>
+            <div class="user-info">
+                <span id="navUserName"></span>
+                <button class="logout-btn" onclick="logout()">退出</button>
             </div>
         </nav>
         
@@ -99,16 +177,77 @@
             <!-- 首页 -->
             <div id="home" class="tab-content active">
                 <div class="card">
-                    <h2>欢迎使用校园运动场地预约系统</h2>
-                    <p>简洁高效，轻松预约校园运动场地</p>
+                    <h2>🏠 欢迎</h2>
+                    <p>您好，<span id="homeUserName"></span>！这里是校园运动场地预约系统</p>
                 </div>
-                <div class="venue-grid" id="homeVenues"></div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-num" id="statTotal">0</div>
+                        <div class="stat-label">我的预约总数</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-num" id="statPending">0</div>
+                        <div class="stat-label">待审核</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-num" id="statApproved">0</div>
+                        <div class="stat-label">已通过</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-num">3</div>
+                        <div class="stat-label">可用场地</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:1.5rem;">
+                    <h2>🔥 热门场地</h2>
+                    <div class="rank-list">
+                        <div class="rank-item">
+                            <div class="rank-num gold">1</div>
+                            <div class="rank-name">篮球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:85%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;">85%</span>
+                        </div>
+                        <div class="rank-item">
+                            <div class="rank-num silver">2</div>
+                            <div class="rank-name">足球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:72%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;">72%</span>
+                        </div>
+                        <div class="rank-item">
+                            <div class="rank-num">3</div>
+                            <div class="rank-name">网球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:58%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;">58%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:1.5rem;">
+                    <h2>⏰ 高峰时段</h2>
+                    <div class="time-slots">
+                        <div class="time-slot hot">08:00-10:00</div>
+                        <div class="time-slot hot">10:00-12:00</div>
+                        <div class="time-slot">14:00-16:00</div>
+                        <div class="time-slot hot">16:00-18:00</div>
+                        <div class="time-slot">18:00-20:00</div>
+                    </div>
+                </div>
             </div>
             
             <!-- 场地列表 -->
             <div id="venues" class="tab-content">
                 <div class="card">
                     <h2>📋 场地列表</h2>
+                    <div class="filter-bar">
+                        <select id="filterType" onchange="renderVenues()">
+                            <option value="">全部类型</option>
+                            <option value="篮球场">🏀 篮球场</option>
+                            <option value="足球场">⚽ 足球场</option>
+                            <option value="网球场">🎾 网球场</option>
+                        </select>
+                        <input type="date" id="filterDate" onchange="renderVenues()">
+                        <button onclick="renderVenues()">筛选</button>
+                        <button onclick="document.getElementById('filterType').value='';document.getElementById('filterDate').value='';renderVenues()">重置</button>
+                    </div>
                     <div class="venue-grid" id="venueList"></div>
                 </div>
             </div>
@@ -164,6 +303,14 @@
             <div id="records" class="tab-content">
                 <div class="card">
                     <h2>📜 我的预约记录</h2>
+                    <div style="margin-bottom:1rem;">
+                        <select id="recordFilter" onchange="renderRecords()">
+                            <option value="">全部状态</option>
+                            <option value="pending">待审核</option>
+                            <option value="approved">已通过</option>
+                            <option value="rejected">已拒绝</option>
+                        </select>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -172,25 +319,167 @@
                                 <th>时间</th>
                                 <th>用途</th>
                                 <th>状态</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody id="recordList"></tbody>
                     </table>
                 </div>
             </div>
+            
+            <!-- 数据统计 -->
+            <div id="stats" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-num">156</div>
+                        <div class="stat-label">本周总预约</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-num">89</div>
+                        <div class="stat-label">待审核</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-num">67</div>
+                        <div class="stat-label">已通过</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-num">78%</div>
+                        <div class="stat-label">平均使用率</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:1.5rem;">
+                    <h2>🏆 场地热门排行</h2>
+                    <div class="rank-list">
+                        <div class="rank-item">
+                            <div class="rank-num gold">1</div>
+                            <div class="rank-name">篮球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:85%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;margin-left:0.5rem;">85%</span>
+                        </div>
+                        <div class="rank-item">
+                            <div class="rank-num silver">2</div>
+                            <div class="rank-name">足球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:72%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;margin-left:0.5rem;">72%</span>
+                        </div>
+                        <div class="rank-item">
+                            <div class="rank-num">3</div>
+                            <div class="rank-name">网球场</div>
+                            <div class="rank-bar"><div class="rank-bar-fill" style="width:58%"></div></div>
+                            <span style="color:#666;font-size:0.85rem;margin-left:0.5rem;">58%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:1.5rem;">
+                    <h2>⏰ 预约时段分布</h2>
+                    <div class="time-slots">
+                        <div class="time-slot hot">08:00-10:00 (42次)</div>
+                        <div class="time-slot hot">10:00-12:00 (38次)</div>
+                        <div class="time-slot">14:00-16:00 (25次)</div>
+                        <div class="time-slot hot">16:00-18:00 (35次)</div>
+                        <div class="time-slot">18:00-20:00 (20次)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 用户中心 -->
+            <div id="profile" class="tab-content">
+                <div class="card">
+                    <h2>👤 用户中心</h2>
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profileAvatar">👤</div>
+                        <div class="profile-info">
+                            <h3 id="profileName"></h3>
+                            <p id="profileStudentId"></p>
+                        </div>
+                    </div>
+                    <form class="profile-form" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label>姓名</label>
+                            <input type="text" id="profileInputName">
+                        </div>
+                        <div class="form-group">
+                            <label>学号</label>
+                            <input type="text" id="profileInputStudentId" readonly style="background:#f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>手机号</label>
+                            <input type="tel" id="profileInputPhone">
+                        </div>
+                        <button type="submit" class="submit-btn">保存修改</button>
+                    </form>
+                </div>
+                <div class="card" style="margin-top:1.5rem;">
+                    <h2>📊 我的预约统计</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-num" id="profileTotal">0</div>
+                            <div class="stat-label">总预约数</div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-num" id="profileApproved">0</div>
+                            <div class="stat-label">已通过</div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-num" id="profilePending">0</div>
+                            <div class="stat-label">待审核</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- 详情弹窗 -->
+    <div id="venueModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-img" id="modalIcon">🏀</div>
+            <h2 id="modalName" style="margin-bottom:1rem;">篮球场</h2>
+            <div class="detail-row">
+                <span class="detail-label">价格</span>
+                <span class="detail-value" id="modalPrice">¥50/小时</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">场地数量</span>
+                <span class="detail-value" id="modalCount">2片</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">开放时间</span>
+                <span class="detail-value" id="modalTime">08:00-22:00</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">容纳人数</span>
+                <span class="detail-value" id="modalCapacity">20人/场</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">设施</span>
+                <span class="detail-value" id="modalFacility">专业木地板、灯光设备</span>
+            </div>
+            <div style="margin-top:1.5rem;">
+                <button class="submit-btn" onclick="bookFromModal()" style="width:100%;">立即预约</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提醒弹窗 -->
+    <div id="reminderPopup" class="reminder-popup">
+        <span class="reminder-close" onclick="closeReminder()">×</span>
+        <h4>⏰ 预约提醒</h4>
+        <p id="reminderText"></p>
     </div>
 
     <script>
         // 场地数据
         const venues = [
-            { id: 1, name: '篮球场', price: '¥50/小时', icon: '🏀', desc: '室外标准篮球场，2片场地' },
-            { id: 2, name: '足球场', price: '¥100/小时', icon: '⚽', desc: '标准11人制足球场' },
-            { id: 3, name: '网球场', price: '¥60/小时', icon: '🎾', desc: '室外硬地网球场，4片场地' }
+            { id: 1, name: '篮球场', price: '¥50/小时', icon: '🏀', desc: '室外标准篮球场，2片场地', count: '2片', time: '08:00-22:00', capacity: '20人/场', facility: '专业木地板、灯光设备、夜间照明' },
+            { id: 2, name: '足球场', price: '¥100/小时', icon: '⚽', desc: '标准11人制足球场', count: '1片', time: '08:00-21:00', capacity: '22人/场', facility: '天然草皮、球门、换人区' },
+            { id: 3, name: '网球场', price: '¥60/小时', icon: '🎾', desc: '室外硬地网球场，4片场地', count: '4片', time: '08:00-21:00', capacity: '4人/场', facility: '专业塑胶场地、灯光设备' }
         ];
 
         // 状态
         let currentUser = null;
+        let selectedVenue = null;
 
         // 初始化
         function init() {
@@ -199,7 +488,8 @@
                 currentUser = JSON.parse(saved);
                 showMainPage();
             }
-            renderVenues();
+            checkReminders();
+            setInterval(checkReminders, 60000);
         }
 
         // 登录
@@ -218,11 +508,19 @@
             showMainPage();
         }
 
+        // 退出
+        function logout() {
+            localStorage.removeItem('campusUser');
+            location.reload();
+        }
+
         // 显示主页面
         function showMainPage() {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainPage').style.display = 'block';
             
+            document.getElementById('navUserName').textContent = currentUser.name;
+            document.getElementById('homeUserName').textContent = currentUser.name;
             document.getElementById('bookName').value = currentUser.name;
             document.getElementById('bookStudentId').value = currentUser.studentId;
             document.getElementById('bookPhone').value = currentUser.phone;
@@ -234,26 +532,111 @@
                 select.innerHTML += `<option value="${v.name}">${v.icon} ${v.name} - ${v.price}</option>`;
             });
             
+            // 用户中心
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileStudentId').textContent = '学号：' + currentUser.studentId;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0);
+            document.getElementById('profileInputName').value = currentUser.name;
+            document.getElementById('profileInputStudentId').value = currentUser.studentId;
+            document.getElementById('profileInputPhone').value = currentUser.phone;
+            
+            // 统计
+            updateStats();
             renderVenues();
             renderRecords();
         }
 
+        // 更新统计
+        function updateStats() {
+            const records = JSON.parse(localStorage.getItem('campusRecords') || '[]')
+                .filter(r => r.studentId === currentUser?.studentId);
+            
+            const total = records.length;
+            const pending = records.filter(r => r.status === 'pending').length;
+            const approved = records.filter(r => r.status === 'approved').length;
+            
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statApproved').textContent = approved;
+            document.getElementById('profileTotal').textContent = total;
+            document.getElementById('profilePending').textContent = pending;
+            document.getElementById('profileApproved').textContent = approved;
+        }
+
+        // 更新个人资料
+        function updateProfile(e) {
+            e.preventDefault();
+            currentUser.name = document.getElementById('profileInputName').value.trim();
+            currentUser.phone = document.getElementById('profileInputPhone').value.trim();
+            localStorage.setItem('campusUser', JSON.stringify(currentUser));
+            document.getElementById('navUserName').textContent = currentUser.name;
+            document.getElementById('homeUserName').textContent = currentUser.name;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0);
+            document.getElementById('bookName').value = currentUser.name;
+            document.getElementById('bookPhone').value = currentUser.phone;
+            alert('保存成功！');
+        }
+
         // 渲染场地
         function renderVenues() {
-            const html = venues.map(v => `
+            const typeFilter = document.getElementById('filterType')?.value || '';
+            const dateFilter = document.getElementById('filterDate')?.value || '';
+            
+            let filtered = venues;
+            if (typeFilter) {
+                filtered = filtered.filter(v => v.name === typeFilter);
+            }
+            
+            const html = filtered.map(v => `
                 <div class="venue-card">
-                    <div class="venue-img">${v.icon}</div>
+                    <div class="venue-img">
+                        ${v.icon}
+                        <span class="venue-badge">可用</span>
+                    </div>
                     <div class="venue-info">
                         <div class="venue-name">${v.name}</div>
                         <div class="venue-desc">${v.desc}</div>
+                        <div class="venue-meta">
+                            <span>📅 ${v.time}</span>
+                        </div>
                         <div class="venue-price">${v.price}</div>
+                        <button class="venue-btn venue-btn-outline" onclick="showVenueDetail(${v.id})">查看详情</button>
                         <button class="venue-btn" onclick="bookVenue('${v.name}')">立即预约</button>
                     </div>
                 </div>
             `).join('');
             
+            document.getElementById('venueList').innerHTML = html || '<div class="empty-state"><div class="icon">📭</div><p>暂无符合条件的场地</p></div>';
             document.getElementById('homeVenues').innerHTML = html;
-            document.getElementById('venueList').innerHTML = html;
+        }
+
+        // 场地详情
+        function showVenueDetail(id) {
+            const v = venues.find(venue => venue.id === id);
+            if (!v) return;
+            
+            selectedVenue = v;
+            document.getElementById('modalIcon').textContent = v.icon;
+            document.getElementById('modalName').textContent = v.name;
+            document.getElementById('modalPrice').textContent = v.price;
+            document.getElementById('modalCount').textContent = v.count;
+            document.getElementById('modalTime').textContent = v.time;
+            document.getElementById('modalCapacity').textContent = v.capacity;
+            document.getElementById('modalFacility').textContent = v.facility;
+            
+            document.getElementById('venueModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('venueModal').classList.remove('active');
+        }
+
+        function bookFromModal() {
+            closeModal();
+            if (selectedVenue) {
+                bookVenue(selectedVenue.name);
+            }
         }
 
         // 跳转预约
@@ -264,41 +647,71 @@
 
         // Tab切换
         function showTab(tabId) {
+            event?.preventDefault();
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            if (event?.target) {
+                event.target.classList.add('active');
+            }
         }
 
         // 提交预约
         document.getElementById('bookingForm').onsubmit = function(e) {
             e.preventDefault();
             
+            const today = new Date().toISOString().split('T')[0];
+            const bookDate = document.getElementById('bookDate').value;
+            
+            if (bookDate < today) {
+                alert('不能预约过去的日期！');
+                return;
+            }
+            
             const record = {
                 id: Date.now(),
                 name: currentUser.name,
                 studentId: currentUser.studentId,
                 venue: document.getElementById('bookVenue').value,
-                date: document.getElementById('bookDate').value,
+                date: bookDate,
                 time: document.getElementById('bookTime').value,
                 purpose: document.getElementById('bookPurpose').value,
-                status: 'pending'
+                status: 'pending',
+                createdAt: new Date().toISOString()
             };
             
             const records = JSON.parse(localStorage.getItem('campusRecords') || '[]');
             records.push(record);
             localStorage.setItem('campusRecords', JSON.stringify(records));
             
-            alert('预约成功！');
+            alert('预约成功！请等待审核。');
             this.reset();
+            document.getElementById('bookVenue').value = record.venue;
+            updateStats();
             renderRecords();
-            showTab('records');
         };
+
+        // 取消预约
+        function cancelRecord(id) {
+            if (!confirm('确定要取消这个预约吗？')) return;
+            
+            let records = JSON.parse(localStorage.getItem('campusRecords') || '[]');
+            records = records.filter(r => r.id !== id);
+            localStorage.setItem('campusRecords', JSON.stringify(records));
+            
+            updateStats();
+            renderRecords();
+            alert('已取消预约');
+        }
 
         // 渲染记录
         function renderRecords() {
+            const statusFilter = document.getElementById('recordFilter')?.value || '';
+            
             const records = JSON.parse(localStorage.getItem('campusRecords') || '[]')
-                .filter(r => r.studentId === currentUser?.studentId);
+                .filter(r => r.studentId === currentUser?.studentId)
+                .filter(r => !statusFilter || r.status === statusFilter)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             
             const statusMap = {
                 pending: ['待审核', 'status-pending'],
@@ -308,15 +721,52 @@
             
             document.getElementById('recordList').innerHTML = records.length ? records.map(r => {
                 const [text, cls] = statusMap[r.status];
+                const canCancel = r.status === 'pending';
                 return `<tr>
                     <td>${r.venue}</td>
                     <td>${r.date}</td>
                     <td>${r.time}</td>
                     <td>${r.purpose}</td>
                     <td><span class="status ${cls}">${text}</span></td>
+                    <td><button class="action-btn action-cancel" ${canCancel ? '' : 'disabled'} onclick="cancelRecord(${r.id})">${canCancel ? '取消' : '-'}</button></td>
                 </tr>`;
-            }).join('') : '<tr><td colspan="5" style="text-align:center;color:#999;">暂无预约记录</td></tr>';
+            }).join('') : '<tr><td colspan="6" style="text-align:center;color:#999;padding:2rem;">暂无预约记录</td></tr>';
         }
+
+        // 检查提醒
+        function checkReminders() {
+            if (!currentUser) return;
+            
+            const records = JSON.parse(localStorage.getItem('campusRecords') || '[]')
+                .filter(r => r.studentId === currentUser.studentId && r.status === 'approved');
+            
+            const now = new Date();
+            
+            records.forEach(r => {
+                const bookDateTime = new Date(`${r.date} ${r.time.split('-')[0]}`);
+                const diff = bookDateTime - now;
+                const hours = diff / (1000 * 60 * 60);
+                
+                if (hours > 0 && hours <= 1) {
+                    showReminder(`您预约的${r.venue}将在1小时后开始（${r.date} ${r.time}）`);
+                }
+            });
+        }
+
+        function showReminder(text) {
+            const popup = document.getElementById('reminderPopup');
+            document.getElementById('reminderText').textContent = text;
+            popup.classList.add('show');
+        }
+
+        function closeReminder() {
+            document.getElementById('reminderPopup').classList.remove('show');
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('venueModal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        };
 
         init();
     </script>
